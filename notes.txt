@@ -13,7 +13,8 @@ https://github.com/emsec/hal was really pretty much first match I found, there m
 
 https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/tree/main/Test%20code/fnirsi_1014d_firmware_backup Instructions note there are some custom fields which need to be saved, so I cna use this? Or is everything on the SD/MMC card (which could break, so backup?)
 https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/tree/main/Test%20code/fnirsi_1014d_startup_with_fel "FEL and DRAM setup", at least could get to boot? See is this differs from 1013d at all.
-https://github.com/froloffw7/FNIRSI-1013D-1014D-Hack "SD card emulation", is this the "The new firmware is easy to install, without even writing over the original firmware, so one can easily revert back to it. Some even modified their scope with a switch to be able to go back and forth." referenced?
+
+https://github.com/froloffw7/FNIRSI-1013D-1014D-Hack "SD card emulation", is this the "The new firmware is easy to install, without even writing over the original firmware, so one can easily revert back to it. Some even modified their scope with a switch to be able to go back and forth." referenced? Nope, according to https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4326355/#msg4326355 this is SD-card emulations for QEMU emulator.
 
 The unique important part for 1014D is https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_User_Interface.png which gladly shows all the wiring - looks like it connects with RX/TX USART to the MCU, so first step could be reverse-engineering that protocol.
 
