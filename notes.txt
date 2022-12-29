@@ -7,6 +7,7 @@ https://www.altera-price.com/files/7f/EP4CE40F23C6N.pdf says that Altera Cyclone
 Based on https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_Data_Acquisition.png W25Q80 SPI flash has JTAG at J2, but FPGA itself seems to have JTAG tied down (so no upgrading or debugging on the fly).
 Another post on the thread notes that reverse-engineering the FPGA revealed it doesn't have JTAG or ISP core like https://www.altera-price.com/files/51/DC-VIDEO-TVP5146N.pdf - MCU at https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_Processor.png doesn't have JTAG connection to the FPGA, so it'd have to be ISP over the shared data link anyway.
 "Another drawback is the vertical sensitivity, which with only 100mV per division true range with a 1x probe setting it is not very good. The advertised 50mV per division is based on software zoom." Have not looked if it could be possible to increase the sensitivity.
+https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4354150/#msg4354150 has some discussion on the analogic frontend and opamp.
 Source: https://www.eevblog.com/forum/testgear/new-bench-scope-fnirsi-1014d-7-1gsas/msg4604008/#msg4604008
 
 https://github.com/emsec/hal was really pretty much first match I found, there might be better reverse-engineering tools. Also apparently it's already been reverse-engineered into Verilog, which might not have worked due to unconstrained clock domain crossings.
@@ -18,7 +19,7 @@ https://github.com/froloffw7/FNIRSI-1013D-1014D-Hack "SD card emulation", is thi
 
 The unique important part for 1014D is https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_User_Interface.png which gladly shows all the wiring - looks like it connects with RX/TX USART to the MCU, so first step could be reverse-engineering that protocol.
 
-https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/1250/ seems to identify the FPGA as AL3A10LG144C7
+https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/1250/ seems to identify the FPGA as AL3A10LG144C7 - other posts mention that apparently older 1013D have Altera, possibly with Altera markings. Can we assume all 1014D are Anlogic?
 
 Anlogic IDE: https://dl.sipeed.com/shareURL/TANG/Premier/IDE 5.0.4
 Mentioned: https://dl.sipeed.com/shareURL/TANG/Primer/IDE but that's 4.6.4
