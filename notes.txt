@@ -1,0 +1,18 @@
+29-DEC-2022 Forked repo to add some of my own notes, for now.
+
+On the basic specs, it was confirmed the FNIRSI 1014D operates at 200MSa/s for fastest time division setting. This is the nominal performance of AD9288-100, which according to the data-sheet has 475 MHz bandwidth and could be operated at least up to 120MSa/s for each of the 2 independent channels at reduced quality. Actual performance of silicon remains to be seen.
+Discussion also notes stock firmware switches to sine wave approximation around ~44MHz, with around ~30MHz filter on the signal path.
+FPGA is said to have up to 24KB per channel (4 or 2?), with 2500 displayed of 3000 available with room for 4096? I think this is supposed to be 24KB for 2 channels, as it's supposed to be quadrupled, but still unclear values.
+https://www.altera-price.com/files/7f/EP4CE40F23C6N.pdf says that Altera Cyclone IV EP4CE6 (ep4ce6e22c8n)has 270 Kbits of memory, which would be 33,75KB. However, other posts https://www.eevblog.com/forum/fpga/reverse-engineering-anlogic-al3_10-fpga/ say this is Anlogic FPGA, and memory could be used for other purposes too.
+Based on https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_Data_Acquisition.png W25Q80 SPI flash has JTAG at J2, but FPGA itself seems to have JTAG tied down (so no upgrading or debugging on the fly).
+Another post on the thread notes that reverse-engineering the FPGA revealed it doesn't have JTAG or ISP core like https://www.altera-price.com/files/51/DC-VIDEO-TVP5146N.pdf - MCU at https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_Processor.png doesn't have JTAG connection to the FPGA, so it'd have to be ISP over the shared data link anyway.
+"Another drawback is the vertical sensitivity, which with only 100mV per division true range with a 1x probe setting it is not very good. The advertised 50mV per division is based on software zoom." Have not looked if it could be possible to increase the sensitivity.
+Source: https://www.eevblog.com/forum/testgear/new-bench-scope-fnirsi-1014d-7-1gsas/msg4604008/#msg4604008
+
+https://github.com/emsec/hal was really pretty much first match I found, there might be better reverse-engineering tools. Also apparently it's already been reverse-engineered into Verilog, which might not have worked due to unconstrained clock domain crossings.
+
+https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/tree/main/Test%20code/fnirsi_1014d_firmware_backup Instructions note there are some custom fields which need to be saved, so I cna use this? Or is everything on the SD/MMC card (which could break, so backup?)
+https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/tree/main/Test%20code/fnirsi_1014d_startup_with_fel "FEL and DRAM setup", at least could get to boot? See is this differs from 1013d at all.
+https://github.com/froloffw7/FNIRSI-1013D-1014D-Hack "SD card emulation", is this the "The new firmware is easy to install, without even writing over the original firmware, so one can easily revert back to it. Some even modified their scope with a switch to be able to go back and forth." referenced?
+
+The unique important part for 1014D is https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_User_Interface.png which gladly shows all the wiring - looks like it connects with RX/TX USART to the MCU, so first step could be reverse-engineering that protocol.
