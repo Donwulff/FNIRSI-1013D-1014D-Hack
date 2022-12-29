@@ -25,3 +25,5 @@ Anlogic IDE: https://dl.sipeed.com/shareURL/TANG/Premier/IDE 5.0.4
 Mentioned: https://dl.sipeed.com/shareURL/TANG/Primer/IDE but that's 4.6.4
 Reference: https://www.eevblog.com/forum/fpga/latest-version-of-anlogic-ide/
 Translations: https://github.com/kprasadvnsi/Anlogic_Doc_English
+
+Wow, https://www.eevblog.com/forum/fpga/reverse-engineering-anlogic-al3_10-fpga/msg4514072/#msg4514072 drops the verilog for the FPGA "some errors still". I need to have a look at that; assuming the FPGA is indeed the same.
