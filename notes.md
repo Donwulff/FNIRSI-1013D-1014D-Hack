@@ -11,6 +11,7 @@ Related works:
 * Class project for [FPGA based oscilloscope](https://github.com/agural/FPGA-Oscilloscope) with claimed 1mV sensitivity.
 * [FPGA digital oscilloscope](https://www.fpga4fun.com/digitalscope.html) project, for learning.
 * [Open source ScopeFUN project](https://www.scopefun.com/) using KAD5510P-25 10bit 250MSPS ADC.
+* [Earth People Technology DSO 100M](https://earthpeopletechnology.com/digital_storage_oscilloscope_dso_100m) complete open source 4ch 80MSPS USB-scope with different OpAmp front-end.
 
 Possibly implementing [sigrok](https://sigrok.org/wiki/Main_Page) compatible data-logger/computer interface?
 
