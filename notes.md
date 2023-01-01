@@ -31,6 +31,8 @@ Discussion also notes stock firmware switches to sine wave approximation around 
 
 There is [another discussion](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg3148590/#msg3148590) considering the OpAmp as OPA356 and explaining some of the choices/[simulation](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg3147914/#msg3147914): "If this is the case then the switching (using the values in the circuit) will follow fairly closely the sequence 5V/div, 2.5V/div, 1V/div, 500mV/div, 200mV/div and 100mV/div.  This leaves the 50mV/div scale and it is quite possible that it is done in software, reducing the resolution to 7 bits, unless there is another gain stage after the OPA356." Conversation needs some parsing to determine if changing components would make sense.
 
+[Answer](https://itecnotes.com/electrical/electronic-attenuation-oscilloscope-front-end/) goes some way towards explaining high-impendance scope buffer with OpAmp in "non-inverting unity gain buffer configuration". [Texas Instruments Buffer Op Amp to ADC Circuit Collection](https://www.ti.com/lit/pdf/sloa098) doesn't have this exact configuration, in particular due to the AC/DC coupling selection.
+
 Another [hack is providing the OpAmps with a dual power supply](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4536116/#msg4536116) to fix ground level, though this is perhaps not for the faint of heart. The OpAmps, relays and the rest of the analog front-end reside under the two large tin-cans on the PCB.
 
 #### FPGA work, sample depth
