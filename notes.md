@@ -1,6 +1,6 @@
 Banggood sells under DANIU brand, ELIKLIV on Amazon, [FNIRSI 1013D](https://www.aliexpress.com/af/1013d.html) and [FNIRSI 1014D](https://www.aliexpress.com/af/1014d.html) at AliExpress.
 
-NOTE: The [FNIRSI 1013D](http://fnirsi.cn/productinfo/556152.html) and [1014D](http://fnirsi.cn/productinfo/575891.html) have one two-channel 100 MSPS Analog to Digital Converter for each probe. In practical terms this means it has 400 MSPS max. (contrary to the 1GSPS spec) which gives it the sampling performance of 40 MHz scope. Bandwidth and software may limit that performance even further. The oscilloscope bandwidth in MHz is technically defined as [-3dB cutoff point with the 10X probe setting](https://www.tek.com/en/support/faqs/how-bandwidth-defined-oscilloscope-0) of the measured signal (Equivalent to 70.7% of the true value). Due to the stock firmware switching to waveform estimation over ~44MHz, the appropriate spec is not clear, but it can certainly be said it doesn't perform well up to 100MHz.
+NOTE: The [FNIRSI 1013D](http://fnirsi.cn/productinfo/556152.html) and [1014D](http://fnirsi.cn/productinfo/575891.html) have one dual (2X) 100 MSPS Analog to Digital Converter for each probe. In practical terms this means it has 400 MSPS max total, 200 MSPS per channel (contrary to the 1GSPS spec) which gives it the sampling performance of 40 MHz scope. Bandwidth and software may limit that performance even further. The oscilloscope bandwidth in MHz is technically defined as [-3dB cutoff point with the 10X probe setting](https://www.tek.com/en/support/faqs/how-bandwidth-defined-oscilloscope-0) of the measured signal (Equivalent to 70.7% of the true value). Due to the stock firmware switching to waveform estimation over ~44MHz, the appropriate spec is not clear, but it can certainly be said it doesn't perform well up to 100MHz.
 
 ![ScopeBandwidthSelection_092016-1](https://user-images.githubusercontent.com/13755049/210172722-59bac364-45af-469d-aeff-836f72458478.jpg "SIGLENT oscilloscope bandwidth determination")
 
@@ -71,3 +71,7 @@ Another post on the thread notes that reverse-engineering the FPGA revealed it d
 [SD card emulation](https://github.com/froloffw7/FNIRSI-1013D-1014D-Hack) in a separate fork, according to [explanation](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4326355/#msg4326355) this is SD-card emulations for QEMU emulator allowing testing and reverse-engineering the ARM firmware on a desktop.
 
 The unique important part for 1014D is the [physical knob controller](https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_User_Interface.png) which gladly shows all the wiring - looks like it connects with RX/TX USART to the MCU, so first step could be reverse-engineering that protocol.
+
+### NOTES TO SELF
+
+ESPRESSIF ESP32-WROVER-B uses CH343CDC driver. NOT the CH343SER driver, that'll bring down the entire Remote Desktop Infrastructure node, don't do that.
