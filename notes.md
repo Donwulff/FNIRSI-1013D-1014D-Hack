@@ -1,10 +1,15 @@
 NOTE: The [FNIRSI 1013D](https://www.aliexpress.com/af/1013d.html) and [1014D](https://www.aliexpress.com/af/1014d.html) have one two-channel 100 MSPS Analog to Digital Converter for each probe. In practical terms this means it has 400 MSPS max. (contrary to the 1GSPS spec) which gives it the sampling performance of 40 MHz scope. Bandwidth and software may limit that performance even further. This appears to be true for [all sub-$200EUR](https://www.eevblog.com/forum/testgear/best-portable-scope-under-$200-for-pinball-work/) scopes as of 2022. Such a scope is still be useful for hobbyist projects, and indeed most embedded circuit work. In the case of [FNIRSI 1013D there also exists working open source firmware](https://github.com/pecostm32/FNIRSI_1013D_Firmware) which allows testing new concepts or implementing protocol decoders not found even on more expensive scopes. 1014D adds basic signal programmable signal generator, professional benchtop look and familiar user-interface for learning.
 
+It will obviously never be okay for telecom, utomotive, medical etc. *production* work governed by quality, security or other management systems and regulations, but you should already know that. This is strictly for R&D, primarily in the paying from your own pocket hobbyist scene.
+
+
+Related work: Alpha stage project [FNIRSI Open5012h project](https://github.com/ataradov/open-5012h) is similar but with no FPGA, single channel, and most notably programming requires swapping the MCU. Number of forks suggests there's great interest even for this.
+
 ### 29-DEC-2022 Forked repo to add some of my own notes, for now.
 
 Many of the claims are currently sourced to [EEVblog discussion](https://www.eevblog.com/forum/testgear/new-bench-scope-fnirsi-1014d-7-1gsas/msg4604008/#msg4604008).
 
-"Firmware" in this is generally meant to imply both software of the [Allwinner F1C100s](https://www.cnx-software.com/2022/01/27/allwinner-f1c100s-handheld-computer-should-cost-15-to-manufacture/) whether from the built-in SD-card or SPI chip, the 1014D instrument panel co-processor, or the FPGA SPI-flash or other programmable components inside the scope.
+"Firmware" in this is generally meant to imply both software of the [Allwinner F1C100s](https://www.cnx-software.com/2022/01/27/allwinner-f1c100s-handheld-computer-should-cost-15-to-manufacture/) whether from the built-in SD-card or SPI chip, the 1014D instrument panel co-processor, or the FPGA SPI-flash or other programmable components inside the scope. In other words, everything that goes inside the covers of the scope, but doesn't require swapping components to change. Notably, the existing [1013D open firmware](https://github.com/pecostm32/FNIRSI_1013D_Firmware) can be ran without changing any of the firmware, by specially preparing the SD-card inside the scope via its USB connection.
 
 #### Bandwidth and samples per second
 
@@ -38,7 +43,7 @@ Another post on the thread notes that reverse-engineering the FPGA revealed it d
 
 [HAL – The Hardware Analyzer](https://github.com/emsec/hal) was really pretty much first match I found for FPGA reverse-engineering, there might be better reverse-engineering tools. It does appear that [pcprogrammer on EEVblog has already finished the job of reversing the netlist for the FPGA into Verilog](https://www.eevblog.com/forum/fpga/reverse-engineering-anlogic-al3_10-fpga/50/#lastPost). There appears to be some remaining problems which might be due to unconstrained clock domain crossings etc.
 
-#### Firmware update, 1014D development
+#### 1014D development, firmware update
 
 [Instructions note there are some custom fields which need to be saved](https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/tree/main/Test%20code/fnirsi_1014d_firmware_backup), so I wonder if I can use this on the 1014D? Or is everything on the SD/MMC card (which could break, so backup?). In retrospect I think the custom fields must be SPI-flash only. The scope can be mounted as SD-card to run the flash-extractor or whole ARM firmware from the SD card without even opening the scope.
 
