@@ -1,16 +1,20 @@
-Banggood sells under DANIU brand, ELIKLIV on Amazon, [FNIRSI](http://fnirsi.cn/productinfo/575891.html) at AliExpress.
+Banggood sells under DANIU brand, ELIKLIV on Amazon, [FNIRSI 1013D](http://fnirsi.cn/productinfo/556152.html) and [FNIRSI 1014D](http://fnirsi.cn/productinfo/575891.html) at AliExpress.
 
-NOTE: The [FNIRSI 1013D](https://www.aliexpress.com/af/1013d.html) and [1014D](https://www.aliexpress.com/af/1014d.html) have one two-channel 100 MSPS Analog to Digital Converter for each probe. In practical terms this means it has 400 MSPS max. (contrary to the 1GSPS spec) which gives it the sampling performance of 40 MHz scope. Bandwidth and software may limit that performance even further. This appears to be true for [all sub-$200EUR](https://www.eevblog.com/forum/testgear/best-portable-scope-under-$200-for-pinball-work/) scopes as of 2022. Such a scope is still be useful for hobbyist projects, and indeed most embedded circuit work. In the case of [FNIRSI 1013D there also exists working open source firmware](https://github.com/pecostm32/FNIRSI_1013D_Firmware) which allows testing new concepts or implementing protocol decoders not found even on more expensive scopes. 1014D adds basic signal programmable signal generator, professional benchtop look and familiar user-interface for learning.
+NOTE: The [FNIRSI 1013D](https://www.aliexpress.com/af/1013d.html) and [1014D](https://www.aliexpress.com/af/1014d.html) have one two-channel 100 MSPS Analog to Digital Converter for each probe. In practical terms this means it has 400 MSPS max. (contrary to the 1GSPS spec) which gives it the sampling performance of 40 MHz scope. Bandwidth and software may limit that performance even further. The oscilloscope bandwidth in MHz is technically defined as -3dB cutoff point of the measured signal, due to the stock firmware switching to waveform estimation over ~44MHz, the spec is not clear, but it can certainly be said it doesn't perform well up to 100MHz.
 
-It will obviously never be okay for telecom, utomotive, medical etc. *production* work governed by quality, security or other management systems and regulations, but you should already know that. This is strictly for R&D, primarily in the paying from your own pocket hobbyist scene.
+These limits appear to be true for [all sub-$200EUR](https://www.eevblog.com/forum/testgear/best-portable-scope-under-$200-for-pinball-work/) scopes as of 2022. Such a scope is still be useful for hobbyist projects, and indeed most embedded circuit work. In the case of [FNIRSI 1013D there exists working open source firmware](https://github.com/pecostm32/FNIRSI_1013D_Firmware) which allows testing new concepts or implementing protocol decoders not found even on more expensive scopes. 1014D adds basic signal programmable signal generator, professional benchtop look and familiar user-interface for learning, though the open source firmware does not yet work for it.
 
+It will obviously never be okay for *production* use in telecom, utomotive, medical etc. work governed by quality, information security or other management systems and regulations, but you should already know that. This is strictly for R&D, primarily in the paying from your own pocket hobbyist scene. (The FNIRSI use-cases list actually says as much without explicitly spelling it out).
 
 Related work:
 * Alpha stage project [FNIRSI Open5012h project](https://github.com/ataradov/open-5012h) is similar but with no FPGA, single channel, and most notably programming requires swapping the MCU. Number of forks suggests there's great interest even for this.
 * Class project for [FPGA based oscilloscope](https://github.com/agural/FPGA-Oscilloscope) with claimed 1mV sensitivity.
 * [FPGA digital oscilloscope](https://www.fpga4fun.com/digitalscope.html) project, for learning.
+* [Open source ScopeFUN project](https://www.scopefun.com/) using KAD5510P-25 10bit 250MSPS ADC.
 
 Possibly implementing [sigrok](https://sigrok.org/wiki/Main_Page) compatible data-logger/computer interface?
+
+[Equivalent-time sampling](https://www.tek.com/en/documents/application-note/real-time-versus-equivalent-time-sampling) and other waveform reconstruction techniques.
 
 ### 29-DEC-2022 Forked repo to add some of my own notes, for now.
 
@@ -21,6 +25,7 @@ Many of the claims are currently sourced to [EEVblog discussion](https://www.eev
 #### Bandwidth and samples per second
 
 On the basic specs, it was confirmed the FNIRSI 1014D operates at 200MSa/s for fastest time division setting. This is the nominal performance of [AD9288-100](https://www.analog.com/media/en/technical-documentation/data-sheets/AD9288.pdf), which according to the data-sheet has 475 MHz bandwidth and could be operated at least up to 110MSa/s for each of the 2 independent channels at reduced quality.
+
 This is likely actually [MXT2088 Chinese clone](http://web.archive.org/web/20211001051828/http://www.mxtronics.com/n107/n124/n181/n184/c692/attr/2630.pdf) with identical specs. For example according to [teardown of OWON HSD272S](http://www.kerrywong.com/2021/09/18/teardown-of-an-owon-hds272s-3-in-1-handheld-oscilloscope-dmm-awg-compared-with-hantek-2d72/) that scope is running it at 125MHz per channel. Actual performance of silicon remains to be seen.
 
 Discussion also notes stock firmware switches to sine wave approximation around ~44MHz, with a filter of around ~30MHz on the signal path. This is to be expected, since according to [Shannon-Nyquist Sampling Theorem](https://www.allaboutcircuits.com/technical-articles/nyquist-shannon-theorem-understanding-sampled-systems/) the maximum resolvable frequency is half of the sample rate, and higher frequencies getting into the ADC alias to look like different frequency. This is kind of a shame as it would still be possible to use the scope to align the phase (highest amplitude) of higher frequency signals of a bus to clock, and each other.
@@ -39,10 +44,10 @@ Another [hack is providing the OpAmps with a dual power supply](https://www.eevb
 
 Its FPGA is said to have up to 24KB per channel (4 or 2 since both ADC have two channels?), with 2500 displayed of 3000 available with room for 4096? I think this is supposed to be 24KB for 2 channels, as it's supposed to have space to be quadrupled, but still unclear values. Another [FNIRSI 1013D teardown](https://www.cnx-software.com/2022/11/16/fnirsi-1013d-teardown-and-mini-review-a-portable-oscilloscope-based-on-allwinner-cpu-anlogic-fgpa/) shows EF2L45LG144B FPGA and gives its specifications as 35k DistributeRAM (bits, presumably) and 700k eRAM.
 
-Anlogic IDE: https://dl.sipeed.com/shareURL/TANG/Premier/IDE 5.0.4
-Mentioned: https://dl.sipeed.com/shareURL/TANG/Primer/IDE but that's 4.6.4
-Reference: https://www.eevblog.com/forum/fpga/latest-version-of-anlogic-ide/
-Translations: https://github.com/kprasadvnsi/Anlogic_Doc_English
+1. Anlogic IDE: https://dl.sipeed.com/shareURL/TANG/Premier/IDE 5.0.4
+2. Mentioned: https://dl.sipeed.com/shareURL/TANG/Primer/IDE but that's 4.6.4
+3. Reference: https://www.eevblog.com/forum/fpga/latest-version-of-anlogic-ide/
+4. Translations: https://github.com/kprasadvnsi/Anlogic_Doc_English
 
 Datasheet for [Altera Cyclone IV EP4CE6 (ep4ce6e22c8n)](https://www.altera-price.com/files/7f/EP4CE40F23C6N.pdf) [used in earlier versions of FNIRSI 1013D](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4027378/#msg4027378) says that has 270 Kbits of memory, which would be 33,75KB. However, [EEVblog post](https://www.eevblog.com/forum/fpga/reverse-engineering-anlogic-al3_10-fpga/) says this is Anlogic [AL3A10LG144C7](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg3885095/#msg3885095) FPGA. Memory could be used for other purposes as well. Different models and builds are using different FPGA's, which may complicate things.
 
