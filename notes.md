@@ -5,7 +5,10 @@ NOTE: The [FNIRSI 1013D](https://www.aliexpress.com/af/1013d.html) and [1014D](h
 It will obviously never be okay for telecom, utomotive, medical etc. *production* work governed by quality, security or other management systems and regulations, but you should already know that. This is strictly for R&D, primarily in the paying from your own pocket hobbyist scene.
 
 
-Related work: Alpha stage project [FNIRSI Open5012h project](https://github.com/ataradov/open-5012h) is similar but with no FPGA, single channel, and most notably programming requires swapping the MCU. Number of forks suggests there's great interest even for this.
+Related work:
+* Alpha stage project [FNIRSI Open5012h project](https://github.com/ataradov/open-5012h) is similar but with no FPGA, single channel, and most notably programming requires swapping the MCU. Number of forks suggests there's great interest even for this.
+* Class project for [FPGA based oscilloscope](https://github.com/agural/FPGA-Oscilloscope) with claimed 1mV sensitivity.
+* [FPGA digital oscilloscope](https://www.fpga4fun.com/digitalscope.html) project, for learning.
 
 Possibly implementing [sigrok](https://sigrok.org/wiki/Main_Page) compatible data-logger/computer interface?
 
