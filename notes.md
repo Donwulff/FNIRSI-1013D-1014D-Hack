@@ -1,6 +1,8 @@
 29-DEC-2022 Forked repo to add some of my own notes, for now.
 
-On the basic specs, it was confirmed the FNIRSI 1014D operates at 200MSa/s for fastest time division setting. This is the nominal performance of AD9288-100, which according to the data-sheet has 475 MHz bandwidth and could be operated at least up to 120MSa/s for each of the 2 independent channels at reduced quality. Actual performance of silicon remains to be seen.
+On the basic specs, it was confirmed the FNIRSI 1014D operates at 200MSa/s for fastest time division setting. This is the nominal performance of AD9288-100, which according to the data-sheet has 475 MHz bandwidth and could be operated at least up to 110MSa/s for each of the 2 independent channels at reduced quality.
+This is likely actually MXT2088 Chinese clone with identical specs. According to http://www.kerrywong.com/2021/09/18/teardown-of-an-owon-hds272s-3-in-1-handheld-oscilloscope-dmm-awg-compared-with-hantek-2d72/ OWON HDS272S is running it at 125MHz per channel. Actual performance of silicon remains to be seen.
+
 Discussion also notes stock firmware switches to sine wave approximation around ~44MHz, with around ~30MHz filter on the signal path.
 FPGA is said to have up to 24KB per channel (4 or 2?), with 2500 displayed of 3000 available with room for 4096? I think this is supposed to be 24KB for 2 channels, as it's supposed to be quadrupled, but still unclear values.
 https://www.altera-price.com/files/7f/EP4CE40F23C6N.pdf says that Altera Cyclone IV EP4CE6 (ep4ce6e22c8n)has 270 Kbits of memory, which would be 33,75KB. However, other posts https://www.eevblog.com/forum/fpga/reverse-engineering-anlogic-al3_10-fpga/ say this is Anlogic FPGA, and memory could be used for other purposes too.
