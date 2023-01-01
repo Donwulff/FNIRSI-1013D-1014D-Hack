@@ -4,12 +4,22 @@ NOTE: The FNIRSI 1013D and 1014D have one two-channel 100 MSPS ADC for each prob
 
 Many of the claims are currently sourced to [EEVblog discussion](https://www.eevblog.com/forum/testgear/new-bench-scope-fnirsi-1014d-7-1gsas/msg4604008/#msg4604008).
 
+#### Bandwidth and samples per second
+
 On the basic specs, it was confirmed the FNIRSI 1014D operates at 200MSa/s for fastest time division setting. This is the nominal performance of AD9288-100, which according to the data-sheet has 475 MHz bandwidth and could be operated at least up to 110MSa/s for each of the 2 independent channels at reduced quality.
 This is likely actually MXT2088 Chinese clone with identical specs. For example according to [teardown of OWON HSD272S](http://www.kerrywong.com/2021/09/18/teardown-of-an-owon-hds272s-3-in-1-handheld-oscilloscope-dmm-awg-compared-with-hantek-2d72/) that scope is running it at 125MHz per channel. Actual performance of silicon remains to be seen.
 
-Discussion also notes stock firmware switches to sine wave approximation around ~44MHz, with a filter of around ~30MHz on the signal path. This is to be expected, since according to [Shannon-Nyquist Sampling Theorem](https://www.allaboutcircuits.com/technical-articles/nyquist-shannon-theorem-understanding-sampled-systems/) the maximum resolvable frequency is half of the sample rate, and higher frequencies getting into the ADC alias to look like different frequency. This is kind of a shame as it would still be possible to use the scope to align the phase (highest amplitude) of higher frequency signals of a bus to clock and each other.
+Discussion also notes stock firmware switches to sine wave approximation around ~44MHz, with a filter of around ~30MHz on the signal path. This is to be expected, since according to [Shannon-Nyquist Sampling Theorem](https://www.allaboutcircuits.com/technical-articles/nyquist-shannon-theorem-understanding-sampled-systems/) the maximum resolvable frequency is half of the sample rate, and higher frequencies getting into the ADC alias to look like different frequency. This is kind of a shame as it would still be possible to use the scope to align the phase (highest amplitude) of higher frequency signals of a bus to clock, and each other.
 
-It's FPGA is said to have up to 24KB per channel (4 or 2 since both ADC have two channels?), with 2500 displayed of 3000 available with room for 4096? I think this is supposed to be 24KB for 2 channels, as it's supposed to have space to be quadrupled, but still unclear values. Another [FNIRSI 1013D teardown](https://www.cnx-software.com/2022/11/16/fnirsi-1013d-teardown-and-mini-review-a-portable-oscilloscope-based-on-allwinner-cpu-anlogic-fgpa/) shows EF2L45LG144B FPGA and gives its specifications as 35k DistributeRAM (bits, presumably) and 700k eRAM.
+#### Vertical sensitivity, analog frontend
+
+"Another drawback is the vertical sensitivity, which with only 100mV per division true range with a 1x probe setting it is not very good. The advertised 50mV per division is based on software zoom." [User marauder on the eevblog forums](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4354150/#msg4354150) reports successfully replacing the OpAmp with Texas Instruments OPA356. This chip has significantly better specs on paper, and might allow increasing the gain rate, although the primary purpose of the OpAmp appears to be acting as a buffer for the ADC.
+
+Another [hack is providing the OpAmps with a dual power supply](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4536116/#msg4536116) to fix ground level, though this is perhaps not for the faint of heart.
+
+#### FPGA work, sample depth
+
+Its FPGA is said to have up to 24KB per channel (4 or 2 since both ADC have two channels?), with 2500 displayed of 3000 available with room for 4096? I think this is supposed to be 24KB for 2 channels, as it's supposed to have space to be quadrupled, but still unclear values. Another [FNIRSI 1013D teardown](https://www.cnx-software.com/2022/11/16/fnirsi-1013d-teardown-and-mini-review-a-portable-oscilloscope-based-on-allwinner-cpu-anlogic-fgpa/) shows EF2L45LG144B FPGA and gives its specifications as 35k DistributeRAM (bits, presumably) and 700k eRAM.
 
 Anlogic IDE: https://dl.sipeed.com/shareURL/TANG/Premier/IDE 5.0.4
 Mentioned: https://dl.sipeed.com/shareURL/TANG/Primer/IDE but that's 4.6.4
@@ -22,9 +32,9 @@ Based on [reverse-engineered schematics](https://github.com/pecostm32/FNIRSI-101
 
 Another post on the thread notes that reverse-engineering the FPGA revealed it doesn't have [JTAG or ISP core](https://www.altera-price.com/files/51/DC-VIDEO-TVP5146N.pdf) as evident by no connection to the pins from user logic - [MCU doesn't have JTAG or SPI connection to the FPGA](https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_Processor.png), so it'd have to be ISP over the shared data link.
 
-"Another drawback is the vertical sensitivity, which with only 100mV per division true range with a 1x probe setting it is not very good. The advertised 50mV per division is based on software zoom." [User marauder on the eevblog forums](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4354150/#msg4354150) reports successfully replacing the OpAmp with Texas Instruments OPA356. This chip has significantly better specs on paper, and might allow increasing the gain rate, although the primary purpose of the OpAmp appears to be acting as a buffer for the ADC. Another [hack is providing the OpAmps with a dual power supply](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4536116/#msg4536116) though this is perhaps not for the faint of heart.
-
 [HAL – The Hardware Analyzer](https://github.com/emsec/hal) was really pretty much first match I found for FPGA reverse-engineering, there might be better reverse-engineering tools. It does appear that [pcprogrammer on EEVblog has already finished the job of reversing the netlist for the FPGA into Verilog](https://www.eevblog.com/forum/fpga/reverse-engineering-anlogic-al3_10-fpga/50/#lastPost). There appears to be some remaining problems which might be due to unconstrained clock domain crossings etc.
+
+#### Firmware update, 1014D development
 
 [Instructions note there are some custom fields which need to be saved](https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/tree/main/Test%20code/fnirsi_1014d_firmware_backup), so I wonder if I can use this on the 1014D? Or is everything on the SD/MMC card (which could break, so backup?). In retrospect I think the custom fields must be SPI-flash only. The scope can be mounted as SD-card to run the flash-extractor or whole ARM firmware from the SD card without even opening the scope.
 
