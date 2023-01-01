@@ -7,6 +7,8 @@ It will obviously never be okay for telecom, utomotive, medical etc. *production
 
 Related work: Alpha stage project [FNIRSI Open5012h project](https://github.com/ataradov/open-5012h) is similar but with no FPGA, single channel, and most notably programming requires swapping the MCU. Number of forks suggests there's great interest even for this.
 
+Possibly implementing [sigrok](https://sigrok.org/wiki/Main_Page) compatible data-logger/computer interface?
+
 ### 29-DEC-2022 Forked repo to add some of my own notes, for now.
 
 Many of the claims are currently sourced to [EEVblog discussion](https://www.eevblog.com/forum/testgear/new-bench-scope-fnirsi-1014d-7-1gsas/msg4604008/#msg4604008).
