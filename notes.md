@@ -26,7 +26,7 @@ Possibly implementing [sigrok](https://sigrok.org/wiki/Main_Page) compatible dat
 
 Many of the claims are currently sourced to [EEVblog discussion](https://www.eevblog.com/forum/testgear/new-bench-scope-fnirsi-1014d-7-1gsas/msg4604008/#msg4604008).
 
-"Firmware" in this is generally meant to imply both software of the [Allwinner F1C100s](https://www.cnx-software.com/2022/01/27/allwinner-f1c100s-handheld-computer-should-cost-15-to-manufacture/) whether from the built-in SD-card or SPI chip, the 1014D instrument panel co-processor, or the FPGA SPI-flash or other programmable components inside the scope. In other words, everything that goes inside the covers of the scope, but doesn't require swapping components to change. Notably, the existing [1013D open firmware](https://github.com/pecostm32/FNIRSI_1013D_Firmware) can be ran without changing any of the firmware, by specially preparing the SD-card inside the scope via its USB connection.
+"Firmware" in this is generally meant to imply both software of the [Allwinner F1C100s](https://www.cnx-software.com/2022/01/27/allwinner-f1c100s-handheld-computer-should-cost-15-to-manufacture/) with ARM9 core, whether from the built-in SD-card or SPI chip, the 1014D instrument panel co-processor, or the FPGA SPI-flash or other programmable components inside the scope. In other words, everything that goes inside the covers of the scope, but doesn't require swapping components to change. Notably, the existing [1013D open firmware](https://github.com/pecostm32/FNIRSI_1013D_Firmware) can be ran without changing any of the firmware, by specially preparing the SD-card inside the scope via its USB connection.
 
 #### Bandwidth and samples per second
 
