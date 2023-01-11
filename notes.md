@@ -38,6 +38,9 @@ This is likely actually [MXT2088 Chinese clone](http://web.archive.org/web/20211
 
 EEVblog discussion also notes stock firmware switches to sine wave approximation around ~44MHz, with a filter of around ~30MHz-35MHz on the signal path. This is to be expected, since according to [Shannon-Nyquist Sampling Theorem](https://www.allaboutcircuits.com/technical-articles/nyquist-shannon-theorem-understanding-sampled-systems/) the maximum resolvable frequency is half of the sample rate, and higher frequencies getting into the ADC alias to look like different frequency. This is kind of a shame as it would still be possible to use the scope to align the phase (highest amplitude) of higher frequency signals of a bus to clock, and each other. A [poster remarks](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg3148108/#msg3148108) low-pass filter corner should be no more than 40-50% of Nyquist right after the simulation.
 
+![image](https://user-images.githubusercontent.com/13755049/211769332-c26c28bf-3bba-432d-aacc-5e310485ab2a.png)
+
+
 #### Vertical sensitivity, analog frontend
 
 "Another drawback is the vertical sensitivity, which with only 100mV per division true range with a 1x probe setting it is not very good. The advertised 50mV per division is based on software zoom." 1014D analog frontend OpAmp is listed as [Runic Technology RS8751XF](https://www.run-ic.com/upload/web/uploads/file/20210421/wD788577TDFQf917d01M2Jj2zb6SkR8M.pdf). [User marauder on the eevblog forums](https://www.eevblog.com/forum/testgear/fnirsi-1013d-100mhz-tablet-oscilloscope/msg4354150/#msg4354150) reports successfully replacing the OpAmp with [Texas Instruments OPA356](https://www.ti.com/lit/gpn/opa356). This chip has significantly better specs on paper, and might allow increasing the gain rate, although the primary purpose of the OpAmp appears to be acting as a buffer for the ADC.
