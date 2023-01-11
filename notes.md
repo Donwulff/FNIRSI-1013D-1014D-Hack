@@ -40,6 +40,7 @@ EEVblog discussion also notes stock firmware switches to sine wave approximation
 
 ![image](https://user-images.githubusercontent.com/13755049/211769332-c26c28bf-3bba-432d-aacc-5e310485ab2a.png)
 
+Lowering the resistor shown, possibly bypassing it with another KAQY214S (as this is still on the high-voltage side of the analog front-end) like the capacitor currently should theoretically lift the filter corner frequency, however this will cause higher frequencies and harmonics to alias into lower ones in the ADC. Pending testing.
 
 #### Vertical sensitivity, analog frontend
 
@@ -70,7 +71,7 @@ Datasheet for [Altera Cyclone IV EP4CE6 (ep4ce6e22c8n)](https://www.altera-price
 
 Based on [reverse-engineered schematics](https://github.com/pecostm32/FNIRSI-1013D-1014D-Hack/blob/main/Schematics/1014D/Scope_1014D_Data_Acquisition.png) FPGA's W25Q80 SPI flash has SPI interface at J2. The SPI flash on my 1014D scope is actually [ZB25VQ80ATIG](https://datasheet.lcsc.com/lcsc/2003141212_Zbit-Semi-ZB25VQ80ATIG_C495747.pdf) which doesn't appear to be directly supported by most flashers. Unfortunately I haven't had success reading the flash with J-Link ([not supported](https://www.segger.com/supported-devices/winbond/spi)). [BusPirate](https://learn.sparkfun.com/tutorials/bus-pirate-v36a-hookup-guide/all) with 3v3 unconnected and board powered on worked with latest 'flashrom' using generic mode worked, however. The JTAG connector on the same page appears to be connected to the FPGA, though not shown on the schematic. This should allow debugging and updating the FPGA on the fly, if facilitated by software.
 
-Interpreting the FPGA bitstream on my 1014D:
+Interpreting the [FPGA bitstream](https://github.com/mmicko/prjtang/blob/master/docs/architecture/bitstream_format.rst) on my 1014D:
 
 f0 (device id packet) 00 (flags) 0006 (6 bytes) 18006c31 (al3_10) 0bb7 (crc) - which happens to be the al3_10 identifier, so yup, same device, which is main thing I wanted to know.
 
